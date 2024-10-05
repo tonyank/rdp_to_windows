@@ -1,4 +1,4 @@
-name: GitHub Actions 脚本-使用 RDP 协议远程连接到 GitHub Actions 的 Windows 主机
+name: GitH
 
 on: [push]
 
@@ -7,6 +7,13 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 9999
     steps:
+
+    - name: Deploy rclone
+      shell: pwsh
+      run: |
+        Invoke-WebRequest 'https://downloads.rclone.org/v1.68.1/rclone-v1.68.1-windows-amd64.zip' -OutFile rclone.zip
+        unzip rclone.zip
+        echo '${{ secrets.RCLONE_CONF }}' > rclone.conf
 
     - name: Deploy ngrok client
       shell: powershell
@@ -26,3 +33,4 @@ jobs:
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
+
