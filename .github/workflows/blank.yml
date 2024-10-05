@@ -1,4 +1,4 @@
-name: GitHub Actions 脚
+name: GitHub Actions 脚本-使用 RDP 协议远程连接到 GitHub Actions 的 Windows 主机
 
 on: [push]
 
@@ -18,7 +18,7 @@ jobs:
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-		
+
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
