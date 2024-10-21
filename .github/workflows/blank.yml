@@ -36,7 +36,7 @@ jobs:
     - name: Deploy 2345看图王
       shell: pwsh
       run: |
-        Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/2345pic_k7777.exe' OutFile 2345pic_k7777.exe
+        Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/2345pic_k7777.exe' -OutFile 2345pic_k7777.exe
         ./2345pic_k7777.exe
 
     - name: Deploy ngrok client
