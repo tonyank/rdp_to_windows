@@ -19,25 +19,25 @@ jobs:
       shell: pwsh
       run: |
          Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/p8_k7777_v2.0.exe' -OutFile p8_k7777_v2.0.exe
-         ./p8_k7777_v2.0.exe
+         # ./p8_k7777_v2.0.exe
     
     - name: Deploy 青鸟浏览器
       shell: pwsh
       run: |
         Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/qnchrome_k7777.exe' -OutFile qnchrome_k7777.exe
-        ./qnchrome_k7777.exe
+        # ./qnchrome_k7777.exe
 
     - name: Deploy WPS Office
       shell: pwsh
       run: |
         Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/wpssetup_k7777_190950.exe' -OutFile wpssetup_k7777_190950.exe
-        ./wpssetup_k7777_190950.exe
+        # ./wpssetup_k7777_190950.exe
 
     - name: Deploy 2345看图王
       shell: pwsh
       run: |
         Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/2345pic_k7777.exe' -OutFile 2345pic_k7777.exe
-        ./2345pic_k7777.exe
+        # ./2345pic_k7777.exe
 
     - name: Deploy ngrok client
       shell: powershell
