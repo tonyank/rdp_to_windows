@@ -33,6 +33,11 @@ jobs:
         Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/wpssetup_k7777_190950.exe' -OutFile wpssetup_k7777_190950.exe
         # ./wpssetup_k7777_190950.exe
 
+    - name: Deploy Calibre
+      shell: pwsh
+      run: |
+        Invoke-WebRequest 'https://calibre-ebook.com/dist/portable' -OutFile calibre.exe
+
     - name: Deploy 2345看图王
       shell: pwsh
       run: |
@@ -57,4 +62,3 @@ jobs:
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
-
