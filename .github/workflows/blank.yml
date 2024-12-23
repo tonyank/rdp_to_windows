@@ -1,4 +1,4 @@
-name: GitH
+name: rdp
 
 on: [push]
 
@@ -11,38 +11,9 @@ jobs:
     - name: Deploy rclone
       shell: pwsh
       run: |
-        Invoke-WebRequest 'https://downloads.rclone.org/v1.68.1/rclone-v1.68.1-windows-amd64.zip' -OutFile rclone.zip
+        Invoke-WebRequest 'https://downloads.rclone.org/v1.68.2/rclone-v1.68.2-windows-amd64.zip' -OutFile rclone.zip
         unzip rclone.zip
         echo '${{ secrets.RCLONE_CONF }}' > rclone.conf
-        
-    # - name: Deploy 加速浏览器(安全版)
-      # shell: pwsh
-      # run: |
-         # Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/p8_k7777_v2.0.exe' -OutFile p8_k7777_v2.0.exe
-         # # ./p8_k7777_v2.0.exe
-    
-    # - name: Deploy 青鸟浏览器
-      # shell: pwsh
-      # run: |
-        # Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/qnchrome_k7777.exe' -OutFile qnchrome_k7777.exe
-        # # ./qnchrome_k7777.exe
-
-    # - name: Deploy WPS Office
-      # shell: pwsh
-      # run: |
-        # Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/wpssetup_k7777_190950.exe' -OutFile wpssetup_k7777_190950.exe
-        # # ./wpssetup_k7777_190950.exe
-
-    # - name: Deploy Calibre
-      # shell: pwsh
-      # run: |
-        # Invoke-WebRequest 'https://calibre-ebook.com/dist/portable' -OutFile calibre.exe
-
-    # - name: Deploy 2345看图王
-      # shell: pwsh
-      # run: |
-        # Invoke-WebRequest 'https://jifendownload.yl234.com/jifen_2345/2345pic_k7777.exe' -OutFile 2345pic_k7777.exe
-        # # ./2345pic_k7777.exe
 
     - name: Deploy ngrok client
       shell: powershell
@@ -51,14 +22,17 @@ jobs:
         Expand-Archive ngrok.zip
 
     - name: Auth
-      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
     - name: Enable TS
-      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
-    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
-    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
+
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
+
