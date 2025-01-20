@@ -11,7 +11,7 @@ jobs:
     - name: Deploy rclone
       shell: pwsh
       run: |
-        Invoke-WebRequest 'https://downloads.rclone.org/v1.68.2/rclone-v1.68.2-windows-amd64.zip' -OutFile rclone.zip
+        Invoke-WebRequest 'https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-windows-amd64.zip' -OutFile rclone.zip
         unzip rclone.zip
         echo '${{ secrets.RCLONE_CONF }}' > rclone.conf
 
