@@ -1,4 +1,4 @@
-name: rd
+name: rdp
 
 on: [push]
 
@@ -13,7 +13,7 @@ jobs:
       run: |
         Invoke-WebRequest 'https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-windows-amd64.zip' -OutFile rclone.zip
         unzip rclone.zip
-        echo '${{ secrets.RCLONE_CONF }}' > rclone.conf
+        echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.0-windows-amd64/rclone.conf
 
     - name: Deploy ngrok client
       shell: powershell
