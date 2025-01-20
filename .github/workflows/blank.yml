@@ -1,4 +1,4 @@
-name: rdp
+name: rd
 
 on: [push]
 
