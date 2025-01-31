@@ -1,4 +1,4 @@
-name: rdp
+name: G
 
 on: [push]
 
@@ -15,18 +15,20 @@ jobs:
         unzip rclone.zip
         echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.0-windows-amd64/rclone.conf
 
-    - name: Deploy ngrok client
+    - name: Deploy ngrok
       shell: powershell
       run: |
         Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
         Expand-Archive ngrok.zip
 
     - name: Auth
+      shell: powershell
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
     - name: Enable TS
+      shell: powershell
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
@@ -34,12 +36,26 @@ jobs:
         Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
 
     - name: Change Theme to Dark
+      shell: cmd
       run: |
         Reg ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v SystemUsesLightTheme /t REG_DWORD /d 0 /f
         Reg ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v AppsUseLightTheme /t REG_DWORD /d 0 /f
 
     - name: Forbid Hide Known File Extention
+      shell: cmd
       run: Reg ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v HideFileExt /t REG_DWORD /d 0 /f
+
+    - name: 关闭“透明效果”。
+      shell: cmd
+      run: REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f
+
+    - name: 隐藏开始菜单栏的“搜索框”。
+      shell: cmd
+      run: REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f
+
+    - name: 重启 explorer 进程。
+      shell: powershell
+      run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe
 
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
