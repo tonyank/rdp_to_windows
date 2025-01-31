@@ -8,15 +8,9 @@ jobs:
     timeout-minutes: 9999
     steps:
 
-    - name: test
+    - name: Deploy rclone
       shell: pwsh
       run: |
-<<<<<<< HEAD
-        echo "fuckdfhdfidhfdif" > 123.ISO
-        mkdir temp
-        move *.ISO temp/
-        md5sum temp/*
-=======
         Invoke-WebRequest 'https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-windows-amd64.zip' -OutFile rclone.zip
         unzip rclone.zip
         echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.0-windows-amd64/rclone.conf
@@ -64,10 +58,9 @@ jobs:
       # run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe
       run: |
         TASKKILL /F /IM explorer.exe /T
-        sleep 3s
+        sleep 3
         explorer.exe
 
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
 
->>>>>>> parent of 2df1fe7 (Update blank.yml)
