@@ -55,7 +55,8 @@ jobs:
 
     - name: 重启 explorer 进程。
       shell: powershell
-      run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe
+      # run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe
+      run: TASKKILL /F /IM explorer.exe /T -AND sleep 3s -AND explorer.exe
 
     - name: Create Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
