@@ -14,7 +14,6 @@ jobs:
         Invoke-WebRequest 'https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-windows-amd64.zip' -OutFile rclone.zip
         unzip rclone.zip
         echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.0-windows-amd64/rclone.conf
-        cd rclone-v1.69.0-windows-amd64 && ./rclone --config rclone.conf copy -P "OneDrive-30GB-ty:26100.3025.250117-1749.GE_RELEASE_SVC_PROD3_CLIENTPRO_OEMRET_X64FRE_ZH-CN.ISO" ./
 
     - name: Deploy ngrok client
       shell: powershell
