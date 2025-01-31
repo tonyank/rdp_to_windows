@@ -58,7 +58,7 @@ jobs:
       # run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe
       run: |
         TASKKILL /F /IM explorer.exe /T
-        sleep 3s
+        sleep 3
         explorer.exe
 
     - name: Create Tunnel
