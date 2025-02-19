@@ -10,9 +10,9 @@ jobs:
       - name: Deploy rclone
         shell: pwsh
         run: |
-          Invoke-WebRequest 'https://downloads.rclone.org/v1.69.0/rclone-v1.69.0-windows-amd64.zip' -OutFile rclone.zip
+          Invoke-WebRequest 'https://downloads.rclone.org/v1.69.1/rclone-v1.69.1-windows-amd64.zip' -OutFile rclone.zip
           unzip rclone.zip
-          echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.0-windows-amd64/rclone.conf
+          echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
           del rclone.zip
 
       - name: Deploy ngrok
@@ -57,10 +57,10 @@ jobs:
       - name: 重启 explorer 进程。
         shell: powershell
         run: |
-          # run: TASKKILL /F /IM explorer.exe /T && sleep 3s && explorer.exe // GitHub Actions 不允许 AND 操作符。
           TASKKILL /F /IM explorer.exe /T
           sleep 3
           explorer.exe
 
       - name: Create Tunnel
         run: .\ngrok\ngrok.exe tcp 3389
+
