@@ -45,9 +45,9 @@ jobs:
         shell: powershell
         run: |
           TASKKILL /F /IM explorer.exe /T
-          SLEEP 5s
+          SLEEP 5
           explorer.exe
-          SLEEP 3s
+          SLEEP 3
 
       - name: Deploy ngrok
         shell: powershell
