@@ -83,11 +83,11 @@ jobs:
             Start-Sleep -Seconds 5
           }
         }
-        
-        if ($null -eq $ngrokApi) {
-          throw "Failed to connect to ngrok API after $maxAttempts attempts."
-        }
-        
-        $ngrokUrl = ($ngrokApi | ConvertFrom-Json).tunnels[0].public_url
-        Write-Host "Ngrok URL: $ngrokUrl"
+
+          if ($null -eq $ngrokApi) {
+            throw "Failed to connect to ngrok API after $maxAttempts attempts."
+          }
+
+          aa$ngrokUrl = ($ngrokApi | ConvertFrom-Json).tunnels[0].public_url
+          Write-Host "Ngrok URL: $ngrokUrl"
 
