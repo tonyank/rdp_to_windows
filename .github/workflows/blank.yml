@@ -3,7 +3,7 @@ name: G
 on: [push]
 
 jobs:
-  Build:
+  build:
     runs-on: windows-2025
     timeout-minutes: 9999
     steps:
@@ -14,19 +14,6 @@ jobs:
           unzip rclone.zip
           echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
           del rclone.zip
-
-      - name: Deploy ngrok
-        shell: powershell
-        run: |
-          Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-          Expand-Archive ngrok.zip
-          del ngrok.zip
-
-      - name: Run ngrok
-        shell: powershell
-        env:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
       - name: Enable TS
         shell: powershell
@@ -58,8 +45,49 @@ jobs:
         shell: powershell
         run: |
           TASKKILL /F /IM explorer.exe /T
-          sleep 3
+          sleep 5
           explorer.exe
+          sleep 3
 
-      - name: Create Tunnel
-        run: .\ngrok\ngrok.exe tcp 3389
+      - name: Deploy ngrok
+        shell: powershell
+        run: |
+          Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+          Expand-Archive ngrok.zip
+          del ngrok.zip
+
+      - name: Authorize ngrok
+        shell: powershell
+        env:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+
+      - name: Start ngrok in the background to create tunnel with tcp port 3389
+        run: |
+          Start-Process -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
+          sleep 5
+
+      - name: Get ngrok tunnel information
+        shell: powershell
+        run: |
+          $maxAttempts = 20
+          $attempts = 0
+          $ngrokApi = $null
+          
+          while (($null -eq $ngrokApi) -and ($attempts -lt $maxAttempts)) {
+          $attempts += 1
+          try {
+            $ngrokApi = Invoke-WebRequest "http://localhost:4040/api/tunnels"
+          } catch {
+            Write-Host "Waiting for ngrok API... (attempt $attempts of $maxAttempts)"
+            Start-Sleep -Seconds 5
+          }
+        }
+        
+        if ($null -eq $ngrokApi) {
+          throw "Failed to connect to ngrok API after $maxAttempts attempts."
+        }
+        
+        $ngrokUrl = ($ngrokApi | ConvertFrom-Json).tunnels[0].public_url
+        Write-Host "Ngrok URL: $ngrokUrl"
+
