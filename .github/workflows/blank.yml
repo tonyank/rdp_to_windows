@@ -41,14 +41,6 @@ jobs:
         shell: cmd
         run: REG ADD "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v SearchboxTaskbarMode /t REG_DWORD /d 0 /f
 
-      - name: 重启 explorer 进程。
-        shell: powershell
-        run: |
-          TASKKILL /F /IM explorer.exe /T
-          sleep 5
-          explorer.exe
-          sleep 3
-
       - name: Deploy ngrok
         shell: powershell
         run: |
