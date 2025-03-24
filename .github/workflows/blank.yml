@@ -15,7 +15,7 @@ jobs:
           echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
           del rclone.zip
 
-      - name: Enable TS
+      - name: Enable TS(Terminal Service)
         shell: powershell
         run: |
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-Name "fDenyTSConnections" -Value 0 -Type DWord
@@ -45,9 +45,9 @@ jobs:
         shell: powershell
         run: |
           TASKKILL /F /IM explorer.exe /T
-          sleep 5
+          SLEEP 5s
           explorer.exe
-          sleep 3
+          SLEEP 3s
 
       - name: Deploy ngrok
         shell: powershell
