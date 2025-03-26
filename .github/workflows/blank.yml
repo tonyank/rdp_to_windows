@@ -45,6 +45,10 @@ jobs:
         shell: cmd
         run: Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v TaskbarSmallIcons /t REG_DWORD /d 1 /f
 
+      - name: 禁用任务栏上的 taskview 按钮。
+        shell: cmd
+        run: Reg Add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowTaskViewButton /t REG_DWORD /d 0 /f
+
       - name: 重启 explorer 进程。
         shell: powershell
         run: |
