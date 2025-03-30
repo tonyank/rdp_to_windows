@@ -7,6 +7,9 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 9999
     steps:
+      - name: Deploy rdp_to_windows
+        uses: actions/checkout@v2
+
       - name: Add rclone config file
         shell: pwsh
         run: echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
