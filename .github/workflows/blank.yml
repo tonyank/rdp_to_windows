@@ -68,9 +68,13 @@ jobs:
         shell: pwsh
         run: echo '${{ secrets.UPLOAD }}' > ./upload.bat
 
-      - name: Run ngrok in the background to create tunnel with tcp port 3
-        shell: powershell
-        run: Start-Process -FilePath ".\ngrok.exe" -ArgumentList "tcp 3389"
+      # - name: Run ngrok in the background to create tunnel with tcp port 3
+        # shell: powershell
+        # run: Start-Process -FilePath ".\ngrok.exe" -ArgumentList "tcp 3389"
+
+      - name: Run ngrok
+        shell: cmd
+        run: ngrok.exe tcp 3389
 
       - name: Run upload.bat
         shell: cmd
