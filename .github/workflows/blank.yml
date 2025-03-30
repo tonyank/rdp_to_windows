@@ -65,13 +65,15 @@ jobs:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
+      - name: Deploy upload.bat
+        shell: pwsh
+        run: |
+          chcp 936 > nul
+          echo '${{ secrets.UPLOAD }}' > ./upload.bat
+
       - name: Run ngrok in the foreground to create tunnel with tcp port 3
         shell: cmd
         run: ngrok.exe tcp 3389
-
-      - name: Deploy upload.bat
-        shell: pwsh
-        run: echo '${{ secrets.UPLOAD }}' > ./upload.bat
 
       - name: Run upload.bat
         shell: cmd
