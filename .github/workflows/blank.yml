@@ -8,14 +8,13 @@ jobs:
     timeout-minutes: 9999
     steps:
       - name: Deploy rdp_to_windows
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - name: Add rclone config file
         shell: pwsh
-        run: |
-          chcp 936 > nul
-          echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
-          
+        run: echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
 
       - name: Enable TS(Terminal Service)
         shell: powershell
@@ -67,13 +66,11 @@ jobs:
 
       - name: Deploy upload.bat
         shell: pwsh
-        run: |
-          chcp 936 > nul
-          echo '${{ secrets.UPLOAD }}' > ./upload.bat
+        run: echo '${{ secrets.UPLOAD }}' > ./upload.bat
 
-      - name: Run ngrok in the foreground to create tunnel with tcp port 3
-        shell: cmd
-        run: ngrok.exe tcp 3389
+      - name: Run ngrok in the background to create tunnel with tcp port 3
+        shell: powershell
+        run: Start-Process -FilePath ".\ngrok.exe" -ArgumentList "tcp 3389"
 
       - name: Run upload.bat
         shell: cmd
