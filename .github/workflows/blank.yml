@@ -60,11 +60,11 @@ jobs:
         shell: powershell
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-        run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+        run: .\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
       - name: Run ngrok in the background to create tunnel with tcp port 3389
         shell: powershell
-        run: Start-Process -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
+        run: Start-Process -FilePath ".\ngrok.exe" -ArgumentList "tcp 3389"
 
       - name: Deploy upload.bat
         shell: pwsh
