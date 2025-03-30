@@ -7,13 +7,9 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 9999
     steps:
-      - name: Deploy rclone
+      - name: Add rclone config file
         shell: pwsh
-        run: |
-          Invoke-WebRequest 'https://downloads.rclone.org/v1.69.1/rclone-v1.69.1-windows-amd64.zip' -OutFile rclone.zip
-          unzip rclone.zip
-          echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
-          del rclone.zip
+        run: echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
 
       - name: Enable TS(Terminal Service)
         shell: powershell
@@ -57,20 +53,21 @@ jobs:
           explorer.exe
           SLEEP 3
 
-      - name: Deploy ngrok
-        shell: powershell
-        run: |
-          Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-          Expand-Archive ngrok.zip
-          del ngrok.zip
-
       - name: Authorize ngrok
         shell: powershell
         env:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
 
-      - name: Run ngrok to create tunnel with tcp port 3389
+      - name: Run ngrok in the background to create tunnel with tcp port 3389
+        shell: powershell
+        run: Start-Process -FilePath ".\ngrok\ngrok.exe" -ArgumentList "tcp 3389"
+
+      - name: Deploy upload.bat
+        shell: pwsh
+        run: echo '${{ secrets.UPLOAD }}' > ./upload.bat
+
+      - name: Run upload.bat
         shell: cmd
-        run: .\ngrok\ngrok.exe tcp 3389
+        run: upload.bat
 
