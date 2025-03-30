@@ -12,7 +12,10 @@ jobs:
 
       - name: Add rclone config file
         shell: pwsh
-        run: echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
+        run: |
+          chcp 936 > nul
+          echo '${{ secrets.RCLONE_CONF }}' > ./rclone-v1.69.1-windows-amd64/rclone.conf
+          
 
       - name: Enable TS(Terminal Service)
         shell: powershell
