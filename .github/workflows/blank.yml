@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       windows_version:
-      type: choice
-      description: 'choose windows versison'
-      options:
-        - windows-2022
-        - windows-2025
-        - windows-11-arm
+        type: choice
+        description: 'choose windows versison'
+        options:
+          - windows-2022
+          - windows-2025
+          - windows-11-arm
 
 jobs:
   build:
