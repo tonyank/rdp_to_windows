@@ -11,7 +11,7 @@ on:
           - windows-2022
           # windows server 2025
           - windows-2025
-          # windows server 2025 arm
+          # windows 11 arm
           - windows-11-arm
 
 jobs:
