@@ -7,8 +7,11 @@ on:
         type: choice
         description: 'Choose Windows version'
         options:
+          # windows server 2022
           - windows-2022
+          # windows server 2025
           - windows-2025
+          # windows server 2025 arm
           - windows-11-arm
 
 jobs:
